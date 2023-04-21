@@ -1,0 +1,29 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-lava'
+
+dependencies {
+	api "com.badlogicgames.ashley:ashley:$ashleyVersion"
+	api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+	api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+	api "io.github.libktx:ktx-actors:$ktxVersion"
+	api "io.github.libktx:ktx-app:$ktxVersion"
+	api "io.github.libktx:ktx-ashley:$ktxVersion"
+	api "io.github.libktx:ktx-assets:$ktxVersion"
+	api "io.github.libktx:ktx-collections:$ktxVersion"
+	api "io.github.libktx:ktx-freetype:$ktxVersion"
+	api "io.github.libktx:ktx-graphics:$ktxVersion"
+	api "io.github.libktx:ktx-i18n:$ktxVersion"
+	api "io.github.libktx:ktx-inject:$ktxVersion"
+	api "io.github.libktx:ktx-json:$ktxVersion"
+	api "io.github.libktx:ktx-log:$ktxVersion"
+	api "io.github.libktx:ktx-math:$ktxVersion"
+	api "io.github.libktx:ktx-preferences:$ktxVersion"
+	api "io.github.libktx:ktx-reflect:$ktxVersion"
+	api "io.github.libktx:ktx-style:$ktxVersion"
+	api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+	api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+	api "com.github.fxgaming:gdx-psx:$gdxPsxVersion"
+	api "com.github.mgsx-dev.gdx-gltf:gltf:$gdxGltfVersion"
+	implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+}
