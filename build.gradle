@@ -25,5 +25,6 @@ dependencies {
 	api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
 	api "com.github.fxgaming:gdx-psx:$gdxPsxVersion"
 	api "com.github.mgsx-dev.gdx-gltf:gltf:$gdxGltfVersion"
+	implementation project(":gdx-lava")
 	implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 }
