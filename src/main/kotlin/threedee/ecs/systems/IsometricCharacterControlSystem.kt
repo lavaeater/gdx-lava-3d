@@ -4,9 +4,12 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector3
 import ktx.app.KtxInputAdapter
 import ktx.ashley.allOf
+import ktx.log.debug
+import ktx.log.info
 import ktx.math.vec3
 import threedee.ecs.components.IsometricCameraFollowComponent
 import threedee.ecs.components.KeyboardControlComponent
@@ -14,6 +17,7 @@ import threedee.ecs.components.SceneComponent
 import threedee.general.Direction
 import threedee.general.DirectionControl
 import twodee.core.world
+import twodee.injection.InjectionContext.Companion.inject
 import twodee.input.KeyPress
 import twodee.input.command
 
@@ -29,6 +33,7 @@ class IsometricCharacterControlSystem :
     private val controlledEntity by lazy { entities.first() }
     private val controlComponent by lazy { KeyboardControlComponent.get(controlledEntity) }
     private val scene by lazy { SceneComponent.get(controlledEntity).scene }
+    private val camera by lazy { inject<OrthographicCamera>() }
 
     private val controlMap = command("Controoool") {
         setBoth(
@@ -55,6 +60,36 @@ class IsometricCharacterControlSystem :
             { controlComponent.remove(Direction.Right) },
             { controlComponent.add(Direction.Right) }
         )
+        setDown(Input.Keys.UP, "zOom in") {
+            camera.zoom /= 1.1f
+            info { "zoom: ${camera.zoom}" }
+            camera.update()
+        }
+        setDown(Input.Keys.DOWN, "zOom out") {
+            camera.zoom *= 1.1f
+            info { "zoom: ${camera.zoom}" }
+            camera.update()
+        }
+        setDown(Input.Keys.NUMPAD_8, "zOom out") {
+            camera.near *= 1.25f
+            info { "near: ${camera.near}" }
+            camera.update()
+        }
+        setDown(Input.Keys.NUMPAD_2, "zOom out") {
+            camera.near /= 1.25f
+            info { "near: ${camera.near}" }
+            camera.update()
+        }
+        setDown(Input.Keys.NUMPAD_6, "zOom out") {
+            camera.far *= 1.25f
+            info { "far: ${camera.far}" }
+            camera.update()
+        }
+        setDown(Input.Keys.NUMPAD_4, "zOom out") {
+            camera.far /= 1.25f
+            info { "far: ${camera.far}" }
+            camera.update()
+        }
 //        setBoth(
 //            Input.Keys.UP,
 //            "Up",
@@ -117,7 +152,9 @@ class IsometricCharacterControlSystem :
     override fun processEntity(entity: Entity, deltaTime: Float) {
         scene.modelInstance.transform.getTranslation(worldPosition)
         setDirectionVector(controlComponent.directionControl)
-        worldPosition.lerp((worldPosition + directionVector), 0.5f)
+        worldPosition.lerp((worldPosition + directionVector), 0.1f)
         scene.modelInstance.transform.setToWorld(worldPosition, Vector3.Z, Vector3.Y)
+        if(!directionVector.isZero)
+            scene.modelInstance.transform.rotateTowardDirection(directionVector, Vector3.Y)
     }
 }
