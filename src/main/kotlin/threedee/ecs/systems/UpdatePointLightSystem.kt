@@ -1,13 +1,13 @@
-package ecs.systems
+package threedee.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import general.Direction
-import ecs.components.MotionStateComponent
-import ecs.components.PointLightComponent
 import ktx.ashley.allOf
 import ktx.math.plus
 import ktx.math.vec3
+import threedee.ecs.components.MotionStateComponent
+import threedee.ecs.components.PointLightComponent
+import threedee.general.Direction
 
 class UpdatePointLightSystem:IteratingSystem(allOf(PointLightComponent::class, MotionStateComponent::class).get()) {
     override fun processEntity(entity: Entity, deltaTime: Float) {

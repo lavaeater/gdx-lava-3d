@@ -1,4 +1,4 @@
-package bullet
+package threedee.bullet
 
 sealed class WheelPosition(val leftOrRight: LeftRight, val frontOrBack: FrontBack) {
     val isFrontWheel get() = frontOrBack == FrontBack.Front

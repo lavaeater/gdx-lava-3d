@@ -1,12 +1,12 @@
-package ecs.components
+package threedee.ecs.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
-import general.Rotation
 import ktx.ashley.mapperFor
-import general.Direction
-import general.DirectionControl
+import threedee.general.Direction
+import threedee.general.DirectionControl
+import threedee.general.Rotation
 
 class KeyboardControlComponent: Component, Pool.Poolable {
 

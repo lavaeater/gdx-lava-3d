@@ -1,4 +1,4 @@
-package bullet
+package threedee.bullet
 
 data class VehicleParams(
     val maxForce: Float,

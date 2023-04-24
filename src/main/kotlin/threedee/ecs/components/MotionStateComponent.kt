@@ -1,10 +1,10 @@
-package ecs.components
+package threedee.ecs.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool.Poolable
 import ktx.ashley.mapperFor
-import bullet.MotionState
+import threedee.bullet.MotionState
 
 class MotionStateComponent : Component, Poolable {
 

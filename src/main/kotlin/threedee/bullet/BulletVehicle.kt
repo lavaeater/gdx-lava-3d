@@ -1,4 +1,4 @@
-package bullet
+package threedee.bullet
 
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector3
@@ -14,14 +14,14 @@ class BulletVehicle(
     private val boundingBox: BoundingBox,
     val bulletBody: btRigidBody,
     val vehicle: btRaycastVehicle,
-    val vehicleParams: VehicleParams
+    val vehicleParams: threedee.bullet.VehicleParams
 ) {
-    private val wheels = mutableMapOf<WheelPosition, btWheelInfo>()
+    private val wheels = mutableMapOf<threedee.bullet.WheelPosition, btWheelInfo>()
     private val chassisHalfExtents = boundingBox.getDimensions(vec3()).scl(0.5f)
-    private val wheelIndices = mutableMapOf<WheelPosition, Int>()
+    private val wheelIndices = mutableMapOf<threedee.bullet.WheelPosition, Int>()
     private var wheelIndex = 0
 
-    fun addWheel(position: WheelPosition, wheelDimensions: Vector3) {
+    fun addWheel(position: threedee.bullet.WheelPosition, wheelDimensions: Vector3) {
         val wheelHalfExtents = wheelDimensions.cpy().scl(0.5f)
         val point = Vector3()
         val direction = Vector3(0f, -1f, 0f) //Oh, so the wheel should point DOWN of all things?
@@ -92,7 +92,7 @@ class BulletVehicle(
             val carBody = btRigidBody(bodyInfo)
                 .apply {
                     activationState = Collision.DISABLE_DEACTIVATION
-                //collisionFlags = Collision.DISABLE_DEACTIVATION
+                    //collisionFlags = Collision.DISABLE_DEACTIVATION
                     setDamping(0.1f, 0.7f)
                 }
             val vehicle = btRaycastVehicle(tuning, carBody, raycaster)

@@ -1,14 +1,14 @@
-package ecs.systems
+package threedee.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.physics.bullet.DebugDrawer
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld
 import com.badlogic.gdx.utils.viewport.Viewport
-import ecs.components.MotionStateComponent
 import ktx.ashley.allOf
 import ktx.math.plus
 import ktx.math.vec3
+import threedee.ecs.components.MotionStateComponent
 
 class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorld: btDynamicsWorld) : IteratingSystem(
     allOf(

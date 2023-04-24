@@ -1,12 +1,12 @@
-package ecs.components
+package threedee.ecs.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 import ktx.math.vec3
-import general.Direction
 import net.mgsx.gltf.scene3d.lights.PointLightEx
+import threedee.general.Direction
 
 class PointLightComponent: Component, Pool.Poolable {
     val offset = vec3()

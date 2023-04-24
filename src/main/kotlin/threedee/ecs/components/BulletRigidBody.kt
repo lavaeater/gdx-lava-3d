@@ -1,4 +1,4 @@
-package ecs.components
+package threedee.ecs.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity

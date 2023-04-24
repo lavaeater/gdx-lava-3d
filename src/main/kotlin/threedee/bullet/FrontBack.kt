@@ -1,4 +1,4 @@
-package bullet
+package threedee.bullet
 
 sealed class FrontBack {
     object Front : FrontBack()

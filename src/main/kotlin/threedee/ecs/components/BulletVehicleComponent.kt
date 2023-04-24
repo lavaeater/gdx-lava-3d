@@ -1,11 +1,11 @@
-package ecs.components
+package threedee.ecs.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.physics.bullet.dynamics.btRaycastVehicle
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
-import bullet.BulletVehicle
+import threedee.bullet.BulletVehicle
 
 class BulletVehicleComponent: Component, Pool.Poolable {
 

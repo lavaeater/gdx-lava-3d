@@ -1,4 +1,4 @@
-package general
+package threedee.general
 
 sealed class Direction {
     object Left: Direction()

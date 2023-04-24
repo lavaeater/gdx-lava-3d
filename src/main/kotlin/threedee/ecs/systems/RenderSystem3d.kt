@@ -1,15 +1,15 @@
-package ecs.systems
+package threedee.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import ecs.components.AddedToRenderableList
-import ecs.components.SceneComponent
-import ecs.components.VisibleComponent
-import eater.physics.addComponent
+import twodee.physics.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import net.mgsx.gltf.scene3d.scene.Scene
 import net.mgsx.gltf.scene3d.scene.SceneManager
+import threedee.ecs.components.AddedToRenderableList
+import threedee.ecs.components.SceneComponent
+import threedee.ecs.components.VisibleComponent
 
 class RenderSystem3d(
     private val sceneManager: SceneManager

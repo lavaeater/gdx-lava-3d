@@ -1,4 +1,4 @@
-package ecs.systems
+package threedee.ecs.systems
 
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.Gdx

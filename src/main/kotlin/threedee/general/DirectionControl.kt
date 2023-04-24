@@ -1,4 +1,4 @@
-package general
+package threedee.general
 
 class DirectionControl {
     val orthogonal = mutableSetOf<Direction>()
