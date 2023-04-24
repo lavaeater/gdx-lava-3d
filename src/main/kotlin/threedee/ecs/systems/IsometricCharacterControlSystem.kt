@@ -11,6 +11,7 @@ import ktx.ashley.allOf
 import ktx.log.debug
 import ktx.log.info
 import ktx.math.vec3
+import threedee.ecs.components.Animation3dComponent
 import threedee.ecs.components.IsometricCameraFollowComponent
 import threedee.ecs.components.KeyboardControlComponent
 import threedee.ecs.components.SceneComponent
@@ -34,6 +35,7 @@ class IsometricCharacterControlSystem :
     private val controlComponent by lazy { KeyboardControlComponent.get(controlledEntity) }
     private val scene by lazy { SceneComponent.get(controlledEntity).scene }
     private val camera by lazy { inject<OrthographicCamera>() }
+    private val animationController by lazy { Animation3dComponent.get(controlledEntity).animationController }
 
     private val controlMap = command("Controoool") {
         setBoth(
@@ -90,6 +92,23 @@ class IsometricCharacterControlSystem :
             info { "far: ${camera.far}" }
             camera.update()
         }
+        var needsAnimInit = true
+        val animKeys = mutableListOf<String>()
+        var currentAnimIndex = 0
+        var maxIndex = 0
+        setDown(Input.Keys.SPACE, "Toggle Animation") {
+            if(needsAnimInit) {
+                needsAnimInit = false
+                animKeys.addAll(Animation3dComponent.get(controlledEntity).animations.map { it.id })
+                maxIndex = animKeys.lastIndex
+                currentAnimIndex = animKeys.indexOf(animationController.current.animation.id)
+            }
+            currentAnimIndex++
+            if(currentAnimIndex > maxIndex) {
+                currentAnimIndex = 0
+            }
+            animationController.setAnimation(animKeys[currentAnimIndex], -1, 0.75f, null)
+        }
 //        setBoth(
 //            Input.Keys.UP,
 //            "Up",
@@ -139,7 +158,7 @@ class IsometricCharacterControlSystem :
 
     private val directionVector = vec3()
     private fun setDirectionVector(directionControl: DirectionControl) {
-        if(directionControl.orthogonal.isEmpty()) {
+        if (directionControl.orthogonal.isEmpty()) {
             directionVector.setZero()
             return
         }
@@ -149,12 +168,15 @@ class IsometricCharacterControlSystem :
 
 
     val worldPosition = vec3()
+    val rotationDirection = Vector3.X
     override fun processEntity(entity: Entity, deltaTime: Float) {
         scene.modelInstance.transform.getTranslation(worldPosition)
         setDirectionVector(controlComponent.directionControl)
         worldPosition.lerp((worldPosition + directionVector), 0.1f)
         scene.modelInstance.transform.setToWorld(worldPosition, Vector3.Z, Vector3.Y)
-        if(!directionVector.isZero)
-            scene.modelInstance.transform.rotateTowardDirection(directionVector, Vector3.Y)
+        rotationDirection.lerp(directionVector, 0.2f)
+        if (!directionVector.isZero) {
+            scene.modelInstance.transform.rotateTowardDirection(rotationDirection, Vector3.Y)
+        }
     }
 }
