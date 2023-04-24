@@ -8,24 +8,27 @@ import com.badlogic.gdx.math.Vector3
 import ktx.app.KtxInputAdapter
 import ktx.ashley.allOf
 import ktx.math.vec3
-import threedee.ecs.components.CameraComponent
+import threedee.ecs.components.IsometricCameraFollowComponent
 import threedee.ecs.components.KeyboardControlComponent
+import threedee.ecs.components.SceneComponent
 import threedee.general.Direction
 import threedee.general.DirectionControl
+import twodee.core.world
 import twodee.input.KeyPress
 import twodee.input.command
 
-class OrthographicCameraControlSystem :
+class IsometricCharacterControlSystem :
     IteratingSystem(
         allOf(
-            CameraComponent::class,
-            KeyboardControlComponent::class
+            IsometricCameraFollowComponent::class,
+            KeyboardControlComponent::class,
+            SceneComponent::class
         ).get()
     ),
     KtxInputAdapter {
     private val controlledEntity by lazy { entities.first() }
     private val controlComponent by lazy { KeyboardControlComponent.get(controlledEntity) }
-    private val camera by lazy { CameraComponent.get(controlledEntity).camera }
+    private val scene by lazy { SceneComponent.get(controlledEntity).scene }
 
     private val controlMap = command("Controoool") {
         setBoth(
@@ -92,14 +95,14 @@ class OrthographicCameraControlSystem :
         super.update(deltaTime)
     }
 
-    val directionToVector = mapOf(
+    private val directionToVector = mapOf(
         Direction.Forward to Vector3(1f, 0f, -1f),
         Direction.Reverse to Vector3(-1f, 0f, 1f),
         Direction.Left to Vector3(-1f, 0f, -1f),
         Direction.Right to Vector3(1f, 0f, 1f)
     )
 
-    val directionVector = vec3()
+    private val directionVector = vec3()
     private fun setDirectionVector(directionControl: DirectionControl) {
         if(directionControl.orthogonal.isEmpty()) {
             directionVector.setZero()
@@ -110,32 +113,11 @@ class OrthographicCameraControlSystem :
     }
 
 
+    val worldPosition = vec3()
     override fun processEntity(entity: Entity, deltaTime: Float) {
+        scene.modelInstance.transform.getTranslation(worldPosition)
         setDirectionVector(controlComponent.directionControl)
-        camera.position.lerp((camera.position + directionVector), 0.25f)
-//
-//        if (controlComponent.has(Direction.Forward)) {
-//            camera.position.z -= 1f
-//            camera.position.x += 1f
-//        }
-//        if (controlComponent.has(Direction.Reverse)) {
-//            camera.position.z += 1f
-//            camera.position.x -= 1f
-//        }
-//        if (controlComponent.has(Direction.Left)) {
-//            camera.position.x -= 1f
-//            camera.position.z -= 1f
-//        }
-//        if (controlComponent.has(Direction.Right)) {
-//            camera.position.x += 1f
-//            camera.position.z += 1f
-//        }
-
-        camera.update()
-
+        worldPosition.lerp((worldPosition + directionVector), 0.5f)
+        scene.modelInstance.transform.setToWorld(worldPosition, Vector3.Z, Vector3.Y)
     }
-}
-
-operator fun Vector3.plus(addor: Vector3): Vector3 {
-    return vec3(this.x + addor.x, this.y + addor.y, this.z + addor.z)
 }
