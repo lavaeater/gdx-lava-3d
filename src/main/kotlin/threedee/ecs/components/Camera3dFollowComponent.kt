@@ -9,8 +9,8 @@ import ktx.math.vec3
 
 class Camera3dFollowComponent:Component, Pool.Poolable {
     val offsetDirection = vec3(0f, 0f, -1f)
-    val offsetXZ = vec2(0f, 6f)
-    var offsetY = 5f
+    val offsetXZ = vec2(0f, 50f)
+    var offsetY = 50f
 
     val offset = vec3()
     override fun reset() {
