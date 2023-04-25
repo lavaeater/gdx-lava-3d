@@ -97,14 +97,14 @@ class IsometricCharacterControlSystem :
         var currentAnimIndex = 0
         var maxIndex = 0
         setDown(Input.Keys.SPACE, "Toggle Animation") {
-            if(needsAnimInit) {
+            if (needsAnimInit) {
                 needsAnimInit = false
                 animKeys.addAll(Animation3dComponent.get(controlledEntity).animations.map { it.id })
                 maxIndex = animKeys.lastIndex
                 currentAnimIndex = animKeys.indexOf(animationController.current.animation.id)
             }
             currentAnimIndex++
-            if(currentAnimIndex > maxIndex) {
+            if (currentAnimIndex > maxIndex) {
                 currentAnimIndex = 0
             }
             animationController.setAnimation(animKeys[currentAnimIndex], -1, 0.75f, null)
@@ -175,8 +175,9 @@ class IsometricCharacterControlSystem :
         worldPosition.lerp((worldPosition + directionVector), 0.1f)
         scene.modelInstance.transform.setToWorld(worldPosition, Vector3.Z, Vector3.Y)
         rotationDirection.lerp(directionVector, 0.2f)
-        if (!directionVector.isZero) {
-            scene.modelInstance.transform.rotateTowardDirection(rotationDirection, Vector3.Y)
+        if (directionVector.isZero) {
+            rotationDirection.set(-1f, 0f, 1f)
         }
+        scene.modelInstance.transform.rotateTowardDirection(rotationDirection, Vector3.Y)
     }
 }
