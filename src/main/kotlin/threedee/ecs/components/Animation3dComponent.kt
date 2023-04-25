@@ -9,11 +9,13 @@ import ktx.ashley.mapperFor
 import ktx.collections.GdxArray
 import net.mgsx.gltf.scene3d.animation.AnimationsPlayer
 
-class Animation3dComponent: Component, Pool.Poolable {
+class Animation3dComponent : Component, Pool.Poolable {
     var animationController = AnimationController(null)
     var animationPlayer = AnimationsPlayer(null)
     var animations = GdxArray<Animation>()
     var currentAnimation = 1
+//    var animationStateMachine
+
     override fun reset() {
         currentAnimation = 1
         animations = GdxArray()
@@ -26,6 +28,7 @@ class Animation3dComponent: Component, Pool.Poolable {
         fun has(entity: Entity): Boolean {
             return mapper.has(entity)
         }
+
         fun get(entity: Entity): Animation3dComponent {
             return mapper.get(entity)
         }
