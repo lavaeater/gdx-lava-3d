@@ -8,13 +8,19 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 import ktx.collections.GdxArray
 import net.mgsx.gltf.scene3d.animation.AnimationsPlayer
+import statemachine.StateMachine
 
 class Animation3dComponent : Component, Pool.Poolable {
     var animationController = AnimationController(null)
     var animationPlayer = AnimationsPlayer(null)
     var animations = GdxArray<Animation>()
     var currentAnimation = 1
-//    var animationStateMachine
+    var animationStateMachine = StateMachine.buildStateMachine<AnimState, AnimEvent>(AnimState.Idle, {
+        state, event ->
+        animationController.setAnimation(state.id, -1)
+    } ) {
+
+    }
 
     override fun reset() {
         currentAnimation = 1
