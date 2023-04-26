@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.math.plus
 import ktx.math.vec3
+import threedee.ecs.components.KeyboardControlComponent
 import threedee.ecs.components.MotionStateComponent
 
 class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorld: btDynamicsWorld) : IteratingSystem(
@@ -20,6 +21,10 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         bulletWorld.debugDrawer = this
     }
 
+    val keyboardControlComponentFamily = allOf(KeyboardControlComponent::class).get()
+    val controlledEntity by lazy { engine.getEntitiesFor(keyboardControlComponentFamily).first() }
+    val controlComponent by lazy { KeyboardControlComponent.get(controlledEntity) }
+
     private val forwardColor = vec3(0f, 0f, 1f)
     private val upColor = vec3(0f, 1f, 0f)
     private val rightColor = vec3(1f, 0f, 0f)
@@ -28,6 +33,7 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         debugDrawer.begin(viewport)
         bulletWorld.debugDrawWorld()
         super.update(deltaTime)
+        debugDrawer.drawSphere(controlComponent.mouseWorldPosition, 0.1f, vec3(1f, 0f,0f))
         debugDrawer.end()
     }
 

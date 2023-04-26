@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
+import ktx.math.vec3
 import threedee.general.Direction
 import threedee.general.DirectionControl
 import threedee.general.Rotation
@@ -32,6 +33,8 @@ class KeyboardControlComponent: Component, Pool.Poolable {
     fun remove(rotation: Rotation) {
         directionControl.remove(rotation)
     }
+
+    val mouseWorldPosition = vec3()
 
     override fun reset() {
         directionControl.clear()
