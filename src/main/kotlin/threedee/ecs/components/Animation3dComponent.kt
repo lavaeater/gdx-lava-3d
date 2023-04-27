@@ -15,7 +15,7 @@ class Animation3dComponent : Component, Pool.Poolable {
     var animationPlayer = AnimationsPlayer(null)
     var animations = GdxArray<Animation>()
     var currentAnimation = 1
-    var animationStateMachine = StateMachine.buildStateMachine<AnimState, AnimEvent>(AnimState.Idle, {
+    var animationStateMachine = StateMachine.buildStateMachine<CharacterState, CharacterEvent>(CharacterState.Idle, {
         state, event ->
         animationController.setAnimation(state.id, -1)
     } ) {
