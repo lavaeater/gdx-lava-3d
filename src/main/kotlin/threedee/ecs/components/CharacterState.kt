@@ -1,17 +1,19 @@
 package threedee.ecs.components
 
-sealed class CharacterState(val id: String) {
-    object Idle : CharacterState("idle")
-    object Walking : CharacterState("walking")
-    object LowCrawl : CharacterState("lowcrawl")
-    object PistolWalk : CharacterState("pistol-walk")
-    object RifleWalk : CharacterState("rifle-walk")
-    object WalkingBackwards : CharacterState("walking-backwards")
+data class AnimProps(val id: String, val speed: Float = 1f, val loopCount: Int = -1)
+
+sealed class CharacterState(val animProps: AnimProps) {
+    object Idle : CharacterState(AnimProps("idle", 1f, -1))
+    object Walking : CharacterState(AnimProps("walking", 1f, -1))
+    object LowCrawl : CharacterState(AnimProps("lowcrawl", 1f, -1))
+    object PistolWalk : CharacterState(AnimProps("pistol-walk", 1f, -1))
+    object RifleWalk : CharacterState(AnimProps("rifle-walk", 1f, -1))
+    object WalkingBackwards : CharacterState(AnimProps("walking-backwards", 1f, -1))
 }
 
 sealed class CharacterEvent {
     object Walk : CharacterEvent()
-    object Stop : CharacterEvent()
+    object StopWalking : CharacterEvent()
     object LowCrawl : CharacterEvent()
     object PistolWalk : CharacterEvent()
     object RifleWalk : CharacterEvent()
