@@ -9,10 +9,12 @@ sealed class CharacterState(val animProps: AnimProps) {
     object PistolWalk : CharacterState(AnimProps("pistol-walk", 1f, -1))
     object RifleWalk : CharacterState(AnimProps("rifle-walk", 1f, -1))
     object WalkingBackwards : CharacterState(AnimProps("walking-backwards", 1f, -1))
+    object StartingWalkForwards: CharacterState(AnimProps("start-walking-forwards", 1f, 1))
 }
 
 sealed class CharacterEvent {
-    object Walk : CharacterEvent()
+    object StartWalkingForwards : CharacterEvent()
+    object ContinueWalkingForwards : CharacterEvent()
     object StopWalking : CharacterEvent()
     object LowCrawl : CharacterEvent()
     object PistolWalk : CharacterEvent()

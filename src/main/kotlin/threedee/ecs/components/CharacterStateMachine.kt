@@ -19,7 +19,7 @@ class CharacterStateMachine(
     val animationStateMachine =
         StateMachine.buildStateMachine<CharacterState, CharacterEvent>(CharacterState.Idle, ::stateChanged) {
             state(CharacterState.Idle) {
-                edge(CharacterEvent.Walk, CharacterState.Walking) {
+                edge(CharacterEvent.StartWalkingForwards, CharacterState.StartingWalkForwards) {
                 }
             }
             state(CharacterState.Walking) {
