@@ -9,10 +9,10 @@ import threedee.general.Direction
 import threedee.general.DirectionControl
 import threedee.general.Rotation
 
-class KeyboardControlComponent: Component, Pool.Poolable {
+class KeyboardControlComponent : Component, Pool.Poolable {
 
     val directionControl = DirectionControl()
-    fun has(direction: Direction) : Boolean {
+    fun has(direction: Direction): Boolean {
         return directionControl.has(direction)
     }
 
@@ -23,6 +23,7 @@ class KeyboardControlComponent: Component, Pool.Poolable {
     fun add(direction: Direction) {
         directionControl.add(direction)
     }
+
     fun remove(direction: Direction) {
         directionControl.remove(direction)
     }
@@ -30,6 +31,7 @@ class KeyboardControlComponent: Component, Pool.Poolable {
     fun add(rotation: Rotation) {
         directionControl.add(rotation)
     }
+
     fun remove(rotation: Rotation) {
         directionControl.remove(rotation)
     }
@@ -40,11 +42,15 @@ class KeyboardControlComponent: Component, Pool.Poolable {
         directionControl.clear()
     }
 
+    val intersection = vec3()
+    val lookDirection = vec3()
+
     companion object {
         val mapper = mapperFor<KeyboardControlComponent>()
         fun has(entity: Entity): Boolean {
             return mapper.has(entity)
         }
+
         fun get(entity: Entity): KeyboardControlComponent {
             return mapper.get(entity)
         }
