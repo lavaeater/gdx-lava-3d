@@ -4,7 +4,7 @@ data class AnimProps(val id: String, val speed: Float = 1f, val loopCount: Int =
 
 sealed class CharacterState(val animProps: AnimProps) {
     object Idle : CharacterState(AnimProps("idle", 0.75f, -1))
-    object WalkingForwards : CharacterState(AnimProps("walking", 0.75f, -1))
+    object Walking : CharacterState(AnimProps("walking", 0.75f, -1))
     object StrafingLeft : CharacterState(AnimProps("walking", 0.75f, -1))
     object StrafingRight : CharacterState(AnimProps("walking", 0.75f, -1))
     object LowCrawling : CharacterState(AnimProps("lowcrawl", 0.75f, -1))
@@ -18,8 +18,9 @@ sealed class CharacterEvent {
     object MoveForwards : CharacterEvent()
     object ContinueWalkingForwards : CharacterEvent()
     object Stop : CharacterEvent()
+    object StopCrawlingKeepWalking : CharacterEvent()
     object GoIdle : CharacterEvent()
-    object StartLowCrawl : CharacterEvent()
+    object StartCrawling : CharacterEvent()
     object PistolWalk : CharacterEvent()
     object RifleWalk : CharacterEvent()
     object MoveBackwards : CharacterEvent()

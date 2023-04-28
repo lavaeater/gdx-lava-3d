@@ -41,6 +41,9 @@ class KeyboardControlComponent : Component, Pool.Poolable {
         directionControl.remove(rotation)
     }
 
+    val hasNoDirection: Boolean get() = directionControl.noDirection
+    val noRotation: Boolean get() = directionControl.noRotation
+
     val mouseWorldPosition = vec3()
 
     override fun reset() {

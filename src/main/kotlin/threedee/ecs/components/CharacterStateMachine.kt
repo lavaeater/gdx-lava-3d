@@ -39,30 +39,31 @@ class CharacterStateMachine(
         StateMachine.buildStateMachine<CharacterState, CharacterEvent>(CharacterState.Idle, ::stateChanged) {
             state(CharacterState.Idle) {
                 edge(CharacterEvent.MoveForwards, CharacterState.StartingWalkForwards) {}
-                edge(CharacterEvent.MoveBackwards, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StrafeLeft, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StrafeRight, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StartLowCrawl, CharacterState.LowCrawling) {}
+                edge(CharacterEvent.MoveBackwards, CharacterState.Walking) {}
+                edge(CharacterEvent.StrafeLeft, CharacterState.Walking) {}
+                edge(CharacterEvent.StrafeRight, CharacterState.Walking) {}
+                edge(CharacterEvent.StartCrawling, CharacterState.LowCrawling) {}
                 edge(CharacterEvent.Stop, CharacterState.Idle) {}
             }
             state(CharacterState.StartingWalkForwards) {
-                edge(CharacterEvent.ContinueWalkingForwards, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.MoveBackwards, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StrafeLeft, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StrafeRight, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StartLowCrawl, CharacterState.LowCrawling) {}
+                edge(CharacterEvent.ContinueWalkingForwards, CharacterState.Walking) {}
+                edge(CharacterEvent.MoveBackwards, CharacterState.Walking) {}
+                edge(CharacterEvent.StrafeLeft, CharacterState.Walking) {}
+                edge(CharacterEvent.StrafeRight, CharacterState.Walking) {}
+                edge(CharacterEvent.StartCrawling, CharacterState.LowCrawling) {}
                 edge(CharacterEvent.Stop, CharacterState.Idle) {}
             }
-            state(CharacterState.WalkingForwards) {
+            state(CharacterState.Walking) {
                 edge(CharacterEvent.Stop, CharacterState.Idle) {}
-                edge(CharacterEvent.StartLowCrawl, CharacterState.LowCrawling) {}
-                edge(CharacterEvent.MoveBackwards, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StrafeLeft, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.StrafeRight, CharacterState.WalkingForwards) {}
-                edge(CharacterEvent.MoveForwards, CharacterState.WalkingForwards) {}
+                edge(CharacterEvent.StartCrawling, CharacterState.LowCrawling) {}
+                edge(CharacterEvent.MoveBackwards, CharacterState.Walking) {}
+                edge(CharacterEvent.StrafeLeft, CharacterState.Walking) {}
+                edge(CharacterEvent.StrafeRight, CharacterState.Walking) {}
+                edge(CharacterEvent.MoveForwards, CharacterState.Walking) {}
             }
             state(CharacterState.LowCrawling) {
                 edge(CharacterEvent.Stop, CharacterState.Idle) {}
+                edge(CharacterEvent.StopCrawlingKeepWalking, CharacterState.Walking) {}
                 edge(CharacterEvent.MoveForwards, CharacterState.LowCrawling) {}
                 edge(CharacterEvent.MoveBackwards, CharacterState.LowCrawling) {}
                 edge(CharacterEvent.StrafeLeft, CharacterState.LowCrawling) {}
