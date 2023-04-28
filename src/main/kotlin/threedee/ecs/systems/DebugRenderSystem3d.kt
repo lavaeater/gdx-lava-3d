@@ -2,8 +2,12 @@ package threedee.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g3d.model.Node
+import com.badlogic.gdx.math.Intersector
+import com.badlogic.gdx.math.Plane
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.math.collision.Ray
 import com.badlogic.gdx.physics.bullet.DebugDrawer
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld
 import com.badlogic.gdx.utils.viewport.Viewport
@@ -32,6 +36,22 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
     private val upColor = vec3(0f, 1f, 0f)
     private val rightColor = vec3(1f, 0f, 0f)
 
+    private val camera by lazy { viewport.camera }
+
+    var mouseScreenPosition = vec3()
+        get() {
+            field.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+            return field
+        }
+        private set
+
+    var mousePosition = vec3()
+        get() {
+            field.set(mouseScreenPosition)
+            return camera.unproject(field)
+        }
+        private set
+
     override fun update(deltaTime: Float) {
         debugDrawer.begin(viewport)
         bulletWorld.debugDrawWorld()
@@ -39,6 +59,10 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         debugDrawer.drawSphere(controlComponent.mouseWorldPosition, 0.1f, vec3(1f, 0f,0f))
         debugDrawer.end()
     }
+    private val rotationDirection = vec3()
+
+    private val someTempVector = vec3()
+
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val motionState = MotionStateComponent.get(entity)
@@ -48,6 +72,7 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         debugDrawer.drawLine(motionState.position, motionState.position + motionState.forward.cpy().scl(2f), forwardColor)
         debugDrawer.drawLine(motionState.position, motionState.position + motionState.up.cpy().scl(2f), upColor)
         debugDrawer.drawLine(motionState.position, motionState.position + motionState.right.cpy().scl(2f), rightColor)
+
     }
 
     private val sceneTranslation = vec3()
@@ -74,4 +99,12 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
             firstNode.children.forEach { drawNode(firstNode, it, scene.modelInstance.transform.getTranslation(sceneTranslation)) }
         }
     }
+}
+
+object GlobalTempVector {
+    val tempVector = Vector3()
+}
+
+fun Vector3.inXZPlane(): Vector3 {
+    return GlobalTempVector.tempVector.set(this.x, 0f, this.z)
 }

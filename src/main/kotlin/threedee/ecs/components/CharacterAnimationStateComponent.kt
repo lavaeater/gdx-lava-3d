@@ -11,7 +11,7 @@ class CharacterAnimationStateComponent: Component, Pool.Poolable {
     fun acceptEvent(event: CharacterEvent) = stateMachine.acceptEvent(event)
     fun update(deltaTime: Float) = stateMachine.update(deltaTime)
 
-    val currentState = stateMachine.currentState.state
+    val currentState get() = stateMachine.currentState.state
 
 
     override fun reset() {

@@ -4,6 +4,9 @@ class DirectionControl {
     val orthogonal = mutableSetOf<Direction>()
     val rotational = mutableSetOf<Rotation>()
 
+    val thrust get() = if(orthogonal.contains(Direction.Forward)) 1f else if(orthogonal.contains(Direction.Reverse)) -1f else 0f
+    val strafe get() = if(orthogonal.contains(Direction.Left)) 1f else if(orthogonal.contains(Direction.Right)) -1f else 0f
+
     fun has(direction: Direction) : Boolean {
         return orthogonal.contains(direction)
     }

@@ -5,11 +5,13 @@ data class AnimProps(val id: String, val speed: Float = 1f, val loopCount: Int =
 sealed class CharacterState(val animProps: AnimProps) {
     object Idle : CharacterState(AnimProps("idle", 1f, -1))
     object WalkingForwards : CharacterState(AnimProps("walking", 1f, -1))
+    object StrafingLeft : CharacterState(AnimProps("walking", 1f, -1))
+    object StrafingRight : CharacterState(AnimProps("walking", 1f, -1))
     object LowCrawling : CharacterState(AnimProps("lowcrawl", 1f, -1))
     object PistolWalk : CharacterState(AnimProps("pistol-walk", 1f, -1))
     object RifleWalk : CharacterState(AnimProps("rifle-walk", 1f, -1))
     object WalkingBackwards : CharacterState(AnimProps("walking-backwards", 1f, -1))
-    object StartingWalkForwards: CharacterState(AnimProps("start-walking-forwards", 1f, 1, CharacterEvent.ContinueWalkingForwards))
+    object StartingWalkForwards: CharacterState(AnimProps("walking", 1f, 1, CharacterEvent.ContinueWalkingForwards))
 }
 
 sealed class CharacterEvent {
