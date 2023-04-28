@@ -3,6 +3,7 @@ package threedee.ecs.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g3d.model.Node
+import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.bullet.DebugDrawer
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld
@@ -74,4 +75,12 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
             firstNode.children.forEach { drawNode(firstNode, it, scene.modelInstance.transform.getTranslation(sceneTranslation)) }
         }
     }
+}
+
+object GlobalVectorBullshit {
+    val tempVector3 = vec3()
+}
+
+fun Vector3.inXZPlane(): Vector3 {
+    return GlobalVectorBullshit.tempVector3.setZero().set(this.x, 0f, this.z)
 }
