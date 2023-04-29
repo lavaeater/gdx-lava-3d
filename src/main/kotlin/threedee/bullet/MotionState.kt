@@ -1,6 +1,7 @@
 package threedee.bullet
 
 import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.bullet.linearmath.btMotionState
 import ktx.math.vec3
@@ -11,6 +12,8 @@ class MotionState(val transform: Matrix4) : btMotionState() {
     val up = vec3()
     val right = vec3()
     private val tmpVector = vec3()
+
+    val currentOrientation = Quaternion()
 
     val backwards: Vector3
         get() = tmpVector.set(forward).rotate(Vector3.Y, 180f)
@@ -29,12 +32,13 @@ class MotionState(val transform: Matrix4) : btMotionState() {
         getDirection(transform)
     }
 
-    private fun getDirection(transform: Matrix4?) {
+    private fun getDirection(transform: Matrix4) {
         forward.set(Vector3.Z)
         up.set(Vector3.Y)
         forward.rot(transform).nor()
         up.rot(transform).nor()
         right.set(forward)
         right.rotate(up, -90f)
+        transform.getRotation(currentOrientation)
     }
 }

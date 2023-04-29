@@ -53,6 +53,9 @@ class StateMachine<S, E> private constructor(private val initialState: S, privat
             throw IllegalStateException("This state (${currentState.state}) doesn't support " +
                     "transition on ${e}")
         }
+        catch(exc: NullPointerException) {
+            throw IllegalStateException("There was no edge for event $e on state ${currentState.state}")
+        }
     }
 
     companion object {

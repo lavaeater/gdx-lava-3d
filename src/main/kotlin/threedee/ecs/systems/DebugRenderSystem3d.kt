@@ -2,6 +2,7 @@ package threedee.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g3d.model.Node
 import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector3
@@ -11,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.math.plus
 import ktx.math.vec3
+import net.mgsx.gltf.scene3d.scene.Scene
 import threedee.ecs.components.KeyboardControlComponent
 import threedee.ecs.components.MotionStateComponent
 import threedee.ecs.components.SceneComponent
@@ -33,25 +35,51 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
     private val upColor = vec3(0f, 1f, 0f)
     private val rightColor = vec3(1f, 0f, 0f)
 
+    private val camera by lazy { viewport.camera }
+
+    var mouseScreenPosition = vec3()
+        get() {
+            field.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)
+            return field
+        }
+        private set
+
+    var mousePosition = vec3()
+        get() {
+            field.set(mouseScreenPosition)
+            return camera.unproject(field)
+        }
+        private set
+
     override fun update(deltaTime: Float) {
         debugDrawer.begin(viewport)
         bulletWorld.debugDrawWorld()
         super.update(deltaTime)
-        debugDrawer.drawSphere(controlComponent.mouseWorldPosition, 0.1f, vec3(1f, 0f,0f))
         debugDrawer.end()
     }
+    private val rotationDirection = vec3()
+
+    private val someTempVector = vec3()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val motionState = MotionStateComponent.get(entity)
         //Draw the normals!
-        if(SceneComponent.has(entity))
-            drawSkeleton(entity)
-        debugDrawer.drawLine(motionState.position, motionState.position + motionState.forward.cpy().scl(2f), forwardColor)
-        debugDrawer.drawLine(motionState.position, motionState.position + motionState.up.cpy().scl(2f), upColor)
-        debugDrawer.drawLine(motionState.position, motionState.position + motionState.right.cpy().scl(2f), rightColor)
+        if(SceneComponent.has(entity)) {
+            val scene = SceneComponent.get(entity).scene
+            drawSkeleton(scene)
+            scene.modelInstance.transform.getTranslation(sceneWorldPosition)
+        }
+
+        debugDrawer.drawLine(sceneWorldPosition, sceneWorldPosition + motionState.forward.cpy().scl(2f), forwardColor)
+        debugDrawer.drawLine(sceneWorldPosition, sceneWorldPosition + motionState.up.cpy().scl(2f), upColor)
+        debugDrawer.drawLine(sceneWorldPosition, sceneWorldPosition + motionState.right.cpy().scl(2f), rightColor)
+
+        debugDrawer.drawSphere(controlComponent.intersection, 0.1f, vec3(1f, 1f,1f))
+        debugDrawer.drawLine(sceneWorldPosition, sceneWorldPosition + controlComponent.lookDirection.cpy().scl(5f), rightColor)
+
     }
 
-    private val sceneTranslation = vec3()
+    private val sceneWorldPosition = vec3()
     private val parentTranslation = vec3()
     private val childTranslation = vec3()
     private fun drawNode(parent: Node, actualNode: Node, worldPosition: Vector3) {
@@ -67,14 +95,20 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         }
     }
 
-    private fun drawSkeleton(entity: Entity) {
-        val scene = SceneComponent.get(entity).scene
-
+    private fun drawSkeleton(scene: Scene) {
         if(scene.modelInstance.nodes.any()) {
             val firstNode = scene.modelInstance.nodes.first()
-            firstNode.children.forEach { drawNode(firstNode, it, scene.modelInstance.transform.getTranslation(sceneTranslation)) }
+            firstNode.children.forEach { drawNode(firstNode, it, scene.modelInstance.transform.getTranslation(sceneWorldPosition)) }
         }
     }
+}
+
+object GlobalTempVector {
+    val tempVector = Vector3()
+}
+
+fun Vector3.inXZPlane(): Vector3 {
+    return GlobalTempVector.tempVector.set(this.x, 0f, this.z)
 }
 
 object GlobalVectorBullshit {
