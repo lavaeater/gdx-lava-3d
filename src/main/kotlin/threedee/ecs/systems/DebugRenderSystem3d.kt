@@ -103,14 +103,6 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
     }
 }
 
-object GlobalTempVector {
-    val tempVector = Vector3()
-}
-
-fun Vector3.inXZPlane(): Vector3 {
-    return GlobalTempVector.tempVector.set(this.x, 0f, this.z)
-}
-
 object GlobalVectorBullshit {
     val tempVector3 = vec3()
 }

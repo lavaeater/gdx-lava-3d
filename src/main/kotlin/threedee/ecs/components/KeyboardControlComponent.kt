@@ -12,7 +12,6 @@ import threedee.general.Rotation
 
 class KeyboardControlComponent : Component, Pool.Poolable {
 
-    val lookDirection = vec3()
     val directionControl = DirectionControl()
 
     val thrust get() = directionControl.thrust
