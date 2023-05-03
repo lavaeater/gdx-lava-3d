@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g3d.model.Node
-import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.bullet.DebugDrawer
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld
@@ -13,7 +12,7 @@ import ktx.ashley.allOf
 import ktx.math.plus
 import ktx.math.vec3
 import net.mgsx.gltf.scene3d.scene.Scene
-import threedee.ecs.components.KeyboardControlComponent
+import threedee.ecs.components.CharacterControlComponent
 import threedee.ecs.components.MotionStateComponent
 import threedee.ecs.components.SceneComponent
 
@@ -27,9 +26,9 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         bulletWorld.debugDrawer = this
     }
 
-    val keyboardControlComponentFamily = allOf(KeyboardControlComponent::class).get()
-    val controlledEntity by lazy { engine.getEntitiesFor(keyboardControlComponentFamily).first() }
-    val controlComponent by lazy { KeyboardControlComponent.get(controlledEntity) }
+    val characterControlComponentFamily = allOf(CharacterControlComponent::class).get()
+    val controlledEntity by lazy { engine.getEntitiesFor(characterControlComponentFamily).first() }
+    val controlComponent by lazy { CharacterControlComponent.get(controlledEntity) }
 
     private val forwardColor = vec3(0f, 0f, 1f)
     private val upColor = vec3(0f, 1f, 0f)

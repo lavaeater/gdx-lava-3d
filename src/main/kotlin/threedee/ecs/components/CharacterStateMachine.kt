@@ -3,6 +3,7 @@ package threedee.ecs.components
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController
 import statemachine.StateMachine
 
+
 class CharacterStateMachine(
     private val animationController: AnimationController
 ) {

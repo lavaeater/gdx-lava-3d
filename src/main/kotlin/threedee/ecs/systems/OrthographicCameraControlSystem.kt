@@ -9,9 +9,9 @@ import ktx.app.KtxInputAdapter
 import ktx.ashley.allOf
 import ktx.math.vec3
 import threedee.ecs.components.CameraComponent
-import threedee.ecs.components.KeyboardControlComponent
+import threedee.ecs.components.CharacterControlComponent
 import threedee.general.Direction
-import threedee.general.DirectionControl
+import threedee.general.CharacterControl
 import twodee.input.KeyPress
 import twodee.input.command
 
@@ -19,12 +19,12 @@ class OrthographicCameraControlSystem :
     IteratingSystem(
         allOf(
             CameraComponent::class,
-            KeyboardControlComponent::class
+            CharacterControlComponent::class
         ).get()
     ),
     KtxInputAdapter {
     private val controlledEntity by lazy { entities.first() }
-    private val controlComponent by lazy { KeyboardControlComponent.get(controlledEntity) }
+    private val controlComponent by lazy { CharacterControlComponent.get(controlledEntity) }
     private val camera by lazy { CameraComponent.get(controlledEntity).camera }
 
     private val controlMap = command("Controoool") {
@@ -100,18 +100,18 @@ class OrthographicCameraControlSystem :
     )
 
     val directionVector = vec3()
-    private fun setDirectionVector(directionControl: DirectionControl) {
-        if(directionControl.orthogonal.isEmpty()) {
+    private fun setDirectionVector(characterControl: CharacterControl) {
+        if(characterControl.orthogonal.isEmpty()) {
             directionVector.setZero()
             return
         }
-        directionControl.orthogonal.forEach { directionVector.add(directionToVector[it]!!) }
+        characterControl.orthogonal.forEach { directionVector.add(directionToVector[it]!!) }
         directionVector.nor()
     }
 
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        setDirectionVector(controlComponent.directionControl)
+        setDirectionVector(controlComponent.characterControl)
         camera.position.lerp((camera.position + directionVector), 0.25f)
 //
 //        if (controlComponent.has(Direction.Forward)) {

@@ -2,6 +2,18 @@ package threedee.ecs.components
 
 data class AnimProps(val id: String, val speed: Float = 1f, val loopCount: Int = -1, val eventWhenAnimDone: CharacterEvent = CharacterEvent.GoIdle)
 
+object AnimPropMap {
+    val animProps = mapOf(
+        "idle" to AnimProps("idle", 0.75f, -1),
+        "walking" to AnimProps("walking", 0.75f, -1),
+        "lowcrawl" to AnimProps("lowcrawl", 0.75f, -1),
+        "pistol-walk" to AnimProps("pistol-walk", 0.75f, -1),
+        "rifle-walk" to AnimProps("rifle-walk", 0.75f, -1),
+        "walking-backwards" to AnimProps("walking-backwards", 0.75f, -1),
+    )
+}
+
+
 sealed class CharacterState(val animProps: AnimProps) {
     object Idle : CharacterState(AnimProps("idle", 0.75f, -1))
     object Walking : CharacterState(AnimProps("walking", 0.75f, -1))
