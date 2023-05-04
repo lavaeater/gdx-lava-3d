@@ -8,8 +8,8 @@ class CharacterControl {
     val noRotation get() = rotational.isEmpty()
     val noModifiers get() = modifiers.isEmpty()
 
-    val thrust get() = if(orthogonal.contains(Direction.Forward)) 1f else if(orthogonal.contains(Direction.Reverse)) -1f else 0f
-    val strafe get() = if(orthogonal.contains(Direction.Left)) 1f else if(orthogonal.contains(Direction.Right)) -1f else 0f
+    val thrust get() = if (orthogonal.contains(Direction.Forward)) 1f else if (orthogonal.contains(Direction.Reverse)) -1f else 0f
+    val strafe get() = if (orthogonal.contains(Direction.Left)) 1f else if (orthogonal.contains(Direction.Right)) -1f else 0f
 
     val mask: Long
         get() {
@@ -26,7 +26,7 @@ class CharacterControl {
             return result
         }
 
-    fun has(direction: Direction) : Boolean {
+    fun has(direction: Direction): Boolean {
         return orthogonal.contains(direction)
     }
 
@@ -34,27 +34,27 @@ class CharacterControl {
         return rotational.contains(rotation)
     }
 
-    fun add(direction: Direction) : Boolean {
+    fun add(direction: Direction): Boolean {
         return orthogonal.add(direction)
     }
 
-    fun remove(direction: Direction): Boolean  {
+    fun remove(direction: Direction): Boolean {
         return orthogonal.remove(direction)
     }
 
-    fun add(rotation: Rotation): Boolean  {
+    fun add(rotation: Rotation): Boolean {
         return rotational.add(rotation)
     }
 
-    fun remove(rotation: Rotation) : Boolean {
+    fun remove(rotation: Rotation): Boolean {
         return rotational.remove(rotation)
     }
 
-    fun add(modifier: Modifier): Boolean  {
+    fun add(modifier: Modifier): Boolean {
         return modifiers.add(modifier)
     }
 
-    fun remove(modifier: Modifier) : Boolean {
+    fun remove(modifier: Modifier): Boolean {
         return modifiers.remove(modifier)
     }
 
@@ -66,5 +66,12 @@ class CharacterControl {
         rotational.clear()
         orthogonal.clear()
         modifiers.clear()
+    }
+
+    fun clearDirections(): Boolean {
+        if (orthogonal.isEmpty())
+            return false
+        orthogonal.clear()
+        return true
     }
 }

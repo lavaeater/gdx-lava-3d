@@ -88,6 +88,10 @@ class CharacterControlComponent : Component, Pool.Poolable {
         dirty = true
     }
 
+    fun clearDirections() {
+        dirty = dirty || characterControl.clearDirections()
+    }
+
     val intersection = vec3()
     val lookDirection = vec3()
     val forward get() = lookDirection
