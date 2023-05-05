@@ -22,6 +22,7 @@ class MotionStateComponent : Component, Poolable {
     val backwards get() = motionState.backwards
     val down get() = motionState.down
     val left get() = motionState.left
+    val orientation get() = motionState.currentOrientation
 
 
     override fun reset() {

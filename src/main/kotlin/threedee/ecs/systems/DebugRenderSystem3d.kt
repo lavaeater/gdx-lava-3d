@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g3d.model.Node
+import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.bullet.DebugDrawer
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld
@@ -12,6 +13,8 @@ import ktx.ashley.allOf
 import ktx.math.plus
 import ktx.math.vec3
 import net.mgsx.gltf.scene3d.scene.Scene
+import threedee.bullet.AttachedNode
+import threedee.ecs.components.AttachedNodesComponent
 import threedee.ecs.components.CharacterControlComponent
 import threedee.ecs.components.MotionStateComponent
 import threedee.ecs.components.SceneComponent
@@ -59,14 +62,16 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
     private val rotationDirection = vec3()
 
     private val someTempVector = vec3()
+    private val currentRotation = Quaternion()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val motionState = MotionStateComponent.get(entity)
         //Draw the normals!
         if(SceneComponent.has(entity)) {
             val scene = SceneComponent.get(entity).scene
-            drawSkeleton(scene)
+//            drawSkeleton(scene)
             scene.modelInstance.transform.getTranslation(sceneWorldPosition)
+            scene.modelInstance.transform.getRotation(currentRotation)
         }
 
         debugDrawer.drawLine(sceneWorldPosition, sceneWorldPosition + motionState.forward.cpy().scl(2f), forwardColor)
@@ -75,7 +80,6 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
 
         debugDrawer.drawSphere(controlComponent.intersection, 0.1f, vec3(1f, 1f,1f))
         debugDrawer.drawLine(sceneWorldPosition, sceneWorldPosition + controlComponent.lookDirection.cpy().scl(5f), rightColor)
-
     }
 
     private val sceneWorldPosition = vec3()
