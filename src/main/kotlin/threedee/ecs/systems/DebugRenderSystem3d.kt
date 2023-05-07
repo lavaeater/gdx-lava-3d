@@ -93,12 +93,9 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         val from = parent.globalTransform.getTranslation(parentTranslation)
         val to = actualNode.globalTransform.getTranslation(childTranslation)
 
-        from.rot(worldTransform)
-        to.rot(worldTransform)
-
-        from.add(worldTransform.getTranslation(sceneWorldPosition))
-        to.add(worldTransform.getTranslation(sceneWorldPosition))
-
+        from.mul(worldTransform)
+        to.mul(worldTransform)
+        
         debugDrawer.drawLine(from, to, vec3(1f, 1f, 0f))
         for (child in actualNode.children) {
             drawNode(actualNode, child, worldTransform)
