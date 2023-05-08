@@ -95,7 +95,7 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
 
         from.mul(worldTransform)
         to.mul(worldTransform)
-        
+
         debugDrawer.drawLine(from, to, vec3(1f, 1f, 0f))
         for (child in actualNode.children) {
             drawNode(actualNode, child, worldTransform)
