@@ -56,7 +56,12 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
         debugDrawer.begin(viewport)
 //        bulletWorld.debugDrawWorld()
         super.update(deltaTime)
+        drawDebugNodes()
         debugDrawer.end()
+    }
+
+    private fun drawDebugNodes() {
+        TODO("Not yet implemented")
     }
 
     private val rotationDirection = vec3()
