@@ -61,7 +61,7 @@ class DebugRenderSystem3d(private val viewport: Viewport, private val bulletWorl
     }
 
     private fun drawDebugNodes() {
-        TODO("Not yet implemented")
+
     }
 
     private val rotationDirection = vec3()
