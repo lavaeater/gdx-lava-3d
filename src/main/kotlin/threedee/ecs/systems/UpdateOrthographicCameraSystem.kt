@@ -23,7 +23,7 @@ class UpdateOrthographicCameraSystem(
     override fun processEntity(entity: Entity, deltaTime: Float) {
 
         SceneComponent.get(entity).scene.modelInstance.transform.getTranslation(target)
-        target.add(1f, 1f, 1f)
+        target.add(1f, 2.5f, 1f)
         orthographicCamera.position.lerp(target, 0.2f)
         orthographicCamera.update()
     }

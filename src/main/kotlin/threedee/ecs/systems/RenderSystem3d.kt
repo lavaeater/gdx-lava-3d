@@ -2,17 +2,26 @@ package threedee.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
+import com.badlogic.gdx.utils.ScreenUtils
 import twodee.physics.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
+import ktx.graphics.use
 import net.mgsx.gltf.scene3d.scene.Scene
 import net.mgsx.gltf.scene3d.scene.SceneManager
 import threedee.ecs.components.AddedToRenderableList
 import threedee.ecs.components.SceneComponent
 import threedee.ecs.components.VisibleComponent
+import threedee.gfx.NestableFrameBuffer
 
 class RenderSystem3d(
-    private val sceneManager: SceneManager
+    private val sceneManager: SceneManager,
+    private val spriteBatch: PolygonSpriteBatch
 ) : IteratingSystem(
     allOf(
         SceneComponent::class,
@@ -20,6 +29,8 @@ class RenderSystem3d(
     )
         .exclude(AddedToRenderableList::class).get()
 ) {
+    private val lowResBuffer = NestableFrameBuffer(Pixmap.Format.RGBA8888, 320, 180, true, false)
+
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
         renderScenes(deltaTime)
@@ -38,6 +49,16 @@ class RenderSystem3d(
 
     private fun renderScenes(deltaTime: Float) {
         sceneManager.update(deltaTime)
-        sceneManager.render()
+        sceneManager.renderShadows()
+        lowResBuffer.begin()
+        ScreenUtils.clear(Color.SKY, true);
+        sceneManager.renderColors()
+        lowResBuffer.end()
+        val texture = lowResBuffer.colorBufferTexture
+        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
+
+        spriteBatch.use {
+             it.draw(texture, 0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.width.toFloat(),0f, 0f, 1f, 1f)
+        }
     }
 }
